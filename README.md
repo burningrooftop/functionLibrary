@@ -66,7 +66,7 @@ Returns **str$** with all occurances of **match$** replaced by **rep$**. If **ma
 
 ### SQLite Helper Functions
 
-quote$(str$)
+#### quote$(str$)
 Returns **str$** enclosed in single quotes. Any single quotes in **str$** with be doubled up (escaped).
 
 ### URL Helper Functions
