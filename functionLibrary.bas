@@ -1,7 +1,4 @@
 ' Run BASIC Common Functions Library
-' by Neal Collins, 2014-2015
-' 
-' Public Domain
 ' ----------------------------------
 
 global PATHSEPARATOR$
