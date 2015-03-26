@@ -32,7 +32,7 @@ Returns the adler32 checksum of **str$**.
 Returns the filename portion of the pathname **path$**.
 
 #### dirname$(path$)
-Returns the directory portion of the pathname **path$**.
+Returns the directory portion of the pathname **path$**. If there is no directory portion, returns ".".
 
 #### extension$(path$)
 Returns the file extension (ie the part of the filename after the '.') of **path$**.
