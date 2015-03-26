@@ -50,12 +50,17 @@ function basename$(path$)
   else
     basename$ = mid$(path$, i + 1)
   end if
+  if PATHSEPARATOR$ = "\" and mid$(basename$, 2, 1) = ":" then
+    ' Strip drive letter
+    basename$ = mid$(basename$, 3)
+  end if
 end function
 
 function dirname$(path$)
   ' Return the directory portion of a path
   for i = len(path$) to 1 step -1
     if mid$(path$, i, 1) = PATHSEPARATOR$ then exit for
+    if PATHSEPARATOR$ = "\" and mid$(path$, i, 1) = ":" then exit for
   next i
   if i = 1 then
     if mid$(path$, i, 1) = PATHSEPARATOR$ then
@@ -64,7 +69,11 @@ function dirname$(path$)
       dirname$ = "."
     end if
   else
-    dirname$ = mid$(path$, 1, i - 1)
+    if PATHSEPARATOR$ = "\" and mid$(path$, i, 1) = ":" then
+      dirname$ = mid$(path$, 1, i) + "."
+    else
+      dirname$ = mid$(path$, 1, i - 1)
+    end if
   end if
 end function
 
@@ -84,6 +93,14 @@ end function
 function pathSeparator$()
   ' Return the path seperator ("/" for linux and Mac OS X, "\" for Windows)
   pathSeparator$ = PATHSEPARATOR$
+end function
+
+function setPathSeparator(delim$)
+  ' Override the path separator. Return 1 if delim$ is "/" or "\", otherwise return 0
+  if delim$ = "/" or delim$ = "\" then
+    PATHSEPARATOR$ = delim$
+    setPathSeparator = 1
+  end if
 end function
 
 ' --------------
