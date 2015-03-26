@@ -1,5 +1,5 @@
 ' Run BASIC Common Functions Library
-' ----------------------------------
+' ------------------------------------
 
 global PATHSEPARATOR$
 
@@ -11,7 +11,7 @@ end if
 
 function version()
   ' Return the library version
-  return 7
+  version = 7
 end function
 
 function isnull()
@@ -77,7 +77,7 @@ function extension$(path$)
       exit for
     end if
     if c$ = PATHSEPARATOR$ then exit for
-    t$ = t$ + c$
+    t$ = c$ + t$
   next i
 end function
 
@@ -219,7 +219,7 @@ function urlEncode$(str$)
   ' Return str$ encoded for use in a URL
   for i = 1 to len(str$)
     c$ = mid$(str$, i, 1)
-    if instr(" !*'();:@&=+$,/?%#[]", c$) <> 0  then
+    if instr("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_.~", c$) = 0  then
       urlEncode$ = urlEncode$ + "%" + dechex$(asc(c$))
     else
       urlEncode$ = urlEncode$ + c$
