@@ -17,27 +17,50 @@ call test "adler32()"
 call assertn #lib adler32(""), 1
 call assertn #lib adler32("Hello World"), 403375133
 
+call test "setPathSeparator()"
+call assertn #lib setPathSeparator("|"), 0
+call assertn #lib setPathSeparator("\"), 1
+call assertn #lib setPathSeparator("/"), 1
+
 call test "basename$()"
+#lib setPathSeparator("/")
 call assert #lib basename$("/path/to/a/file.ext"), "file.ext"
+call assert #lib basename$("file.ext"), "file.ext"
+#lib setPathSeparator("\")
+call assert #lib basename$("c:\path\to\a\file.ext"), "file.ext"
+call assert #lib basename$("c:file.ext"), "file.ext"
 call assert #lib basename$("file.ext"), "file.ext"
 
 call test "dirname$()"
+#lib setPathSeparator("/")
 call assert #lib dirname$("/path/to/a/file.ext"), "/path/to/a"
 call assert #lib dirname$("file.ext"), "."
+#lib setPathSeparator("\")
+call assert #lib dirname$("c:\path\to\a\file.ext"), "c:\path\to\a"
+call assert #lib dirname$("c:file.ext"), "c:."
+call assert #lib dirname$("file.ext"), "."
+
+call test "extension$()"
+#lib setPathSeparator("/")
+call assert #lib extension$("/path/to/a/file.ext"), "ext"
+call assert #lib extension$("/path/to/a/file"), ""
+call assert #lib extension$("/path/to.ext/file"), ""
+#lib setPathSeparator("\")
+call assert #lib extension$("c:\path\to\a\file.ext"), "ext"
+call assert #lib extension$("\path\to\a\file"), ""
+call assert #lib extension$("c:\path\to.ext\file"), ""
 
 call test "PathSeparator$()"
+#lib setPathSeparator("/")
 call assert #lib pathSeparator$(), "/"
+#lib setPathSeparator("\")
+call assert #lib pathSeparator$(), "\"
 
 call test "escapeHTML$()"
 call assert #lib escapeHTML$("abcdefghijklmnopqrstuvwxyz"), "abcdefghijklmnopqrstuvwxyz"
 call assert #lib escapeHTML$("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 call assert #lib escapeHTML$("0123456789-_.~"), "0123456789-_.~"
 call assert #lib escapeHTML$("!#$&'()*+,/:;=?@[]<> "), "!#$&amp;&#39;()*+,/:;=?@[]&lt;&gt; "
-
-call test "extension$()"
-call assert #lib extension$("/path/to/a/file.ext"), "ext"
-call assert #lib extension$("/path/to/a/file"), ""
-call assert #lib extension$("/path/to.ext/file"), ""
 
 call test "getPrefix$()"
 call assert #lib getPrefix$("Hello world!", "apple"), ""
