@@ -26,6 +26,30 @@ Returns the library version (currently set to 7).
 #### adler32(str$)
 Returns the adler32 checksum of **str$**.
 
+### Date Functions
+
+#### formatDate$(d$, format$)
+Returns the date *d$* formatted acording to *format$*. *d$* may be in either Run Basic (MM/DD/YYYY) or SQLite (YYYY-MM-DD) format. *format$* is processed as follows:
+
+dd = day of month (eg. 4)
+DD = day of month zero-padded (eg. 04)
+mm = month number (eg. 3)
+MM = month number zero-padded (eg. 03)
+mon = Month name abbreviated, lower case (eg. mar)
+Mon = Month name abbreviated, initial capital (eg. Mar)
+MON = Month name abbreviated, upper case (eg. MAR)
+month = Month name, lower case (eg. march)
+Month = Month name, initial capital (eg March)
+MONTH = Month name, upper case (eg. MARCH)
+yy = last 2 digits of the year (eg. 7)
+YY = last two digits of year zero-padded (eg. 07)
+cc = century (eg. 20)
+CC = century zero-padded (eg. 20)
+yyyy = year (eg. 2007)
+YYYY = year zero-padded (eg. 2007)
+
+Any other characters are returned unchanged.
+
 ### File Path Function
 
 #### basename$(path$)
@@ -47,6 +71,9 @@ Returns **str$** with characters <, >, &, ", ' encoded to HMTM entities.
 
 ### String Functions
 
+#### hex$(str$)
+Returns the hexidecial representation of *str$*.
+
 #### getPrefix$(str$, match$)
 Returns the portion of **str$** before **match$** or "" if **match$** is not found.
 
@@ -56,6 +83,12 @@ Returns the portion of **str$** after **match$** or "" if **match$** is not foun
 #### extract$(str$, s$, e$)
 Returns the portion of **str$** between **s$** and **e$** or "" if either **s$** or **e$** is not found.
 
+#### ldap$(str$, padlen, padstr$)
+Returns *str$* left padded with *padstr$* to the length *padlen*.
+
+#### rpad$(str$, padlen, padstr$)
+Returns *str$* right padded with *padstr$* to the length *padlen*.
+
 #### replace$(str$, match$, rep$)
 Returns **str$** with first occurance of **match$** repaced by **rep$**. If **match$** is not found,
 **str$** is returned unchanged.
@@ -63,6 +96,12 @@ Returns **str$** with first occurance of **match$** repaced by **rep$**. If **ma
 #### replaceAll$(str$, match$, rep$)
 Returns **str$** with all occurances of **match$** replaced by **rep$**. If **match$** is not found,
 **str$** is returned unchanged.
+
+#### randomCharacter$()
+Returns a random printable ASCII character.
+
+#### randomString$(n)
+Returns a string of *n* random printable ASCII characters.
 
 ### SQLite Helper Functions
 
