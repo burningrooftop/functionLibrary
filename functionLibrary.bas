@@ -3,6 +3,15 @@
 
 global PATHSEPARATOR$
 
+dim MONTH$(12)
+
+for i = 1 to 12
+  read MONTH$(i)
+next i
+
+data "January", "February", "March", "April", "May", "June"
+data "July", "August", "September", "October", "November", "December" 
+
 if Platform$ = "windows" then
   PATHSEPARATOR$ = "\"
 else
@@ -66,42 +75,66 @@ function formatDate$(d$, format$)
 
   i = 1
   while i <= len(format$)
-    select case mid$(format$, i, 4)
-      case "yyyy"
-        formatDate$ = formatDate$ + str$(yyyy)
-        i = i + 4
-      case "YYYY"
-        formatDate$ = formatDate$ + right$("0000" + str$(yyyy), 4)
-        i = i + 4
+    select case mid$(format$, i, 5)
+      case "month"
+        formatDate$ = formatDate$ + lower$(MONTH$(mm))
+        i = i + 5
+      case "Month"
+        formatDate$ = formatDate$ + MONTH$(mm)
+        i = i + 5
+      case "MONTH"
+        formatDate$ = formatDate$ + upper$(MONTH$(mm))
+        i = i + 5
       case else
-        select case mid$(format$, i, 2)
-          case "cc"
-            formatDate$ = formatDate$ + str$(cc)
-            i = i + 2
-          case "CC"
-            formatDate$ = formatDate$ + right$("00" + str$(cc), 2)
-            i = i + 2
-          case "dd"
-            formatDate$ = formatDate$ + str$(dd)
-            i = i + 2
-          case "DD"
-            formatDate$ = formatDate$ + right$("00" + str$(dd), 2)
-            i = i + 2
-          case "mm"
-            formatDate$ = formatDate$ + str$(mm)
-            i = i + 2
-          case "MM"
-            formatDate$ = formatDate$ + right$("00" + str$(mm), 2)
-            i = i + 2
-          case "yy"
-            formatDate$ = formatDate$ + str$(yy)
-            i = i + 2
-          case "YY"
-            formatDate$ = formatDate$ + right$("00" + str$(yy), 2)
-            i = i + 2
+        select case mid$(format$, i, 4)
+          case "yyyy"
+            formatDate$ = formatDate$ + str$(yyyy)
+            i = i + 4
+          case "YYYY"
+            formatDate$ = formatDate$ + right$("0000" + str$(yyyy), 4)
+            i = i + 4
           case else
-            formatDate$ = formatDate$ + mid$(format$, i, 1)
-            i = i + 1
+            select case mid$(format$, i, 3)
+              case "mon"
+                formatDate$ = formatDate$ + lower$(left$(MONTH$(mm), 3))
+                i = i + 3
+              case "Mon"
+                formatDate$ = formatDate$ + left$(MONTH$(mm), 3)
+                i = i + 3
+              case "MON"
+                formatDate$ = formatDate$ + upper$(left$(MONTH$(mm), 3))
+                i = i + 3
+              case else
+                select case mid$(format$, i, 2)
+                  case "cc"
+                    formatDate$ = formatDate$ + str$(cc)
+                    i = i + 2
+                  case "CC"
+                    formatDate$ = formatDate$ + right$("00" + str$(cc), 2)
+                    i = i + 2
+                  case "dd"
+                    formatDate$ = formatDate$ + str$(dd)
+                    i = i + 2
+                  case "DD"
+                    formatDate$ = formatDate$ + right$("00" + str$(dd), 2)
+                    i = i + 2
+                  case "mm"
+                    formatDate$ = formatDate$ + str$(mm)
+                    i = i + 2
+                  case "MM"
+                    formatDate$ = formatDate$ + right$("00" + str$(mm), 2)
+                    i = i + 2
+                  case "yy"
+                    formatDate$ = formatDate$ + str$(yy)
+                    i = i + 2
+                  case "YY"
+                    formatDate$ = formatDate$ + right$("00" + str$(yy), 2)
+                    i = i + 2
+                  case else
+                    formatDate$ = formatDate$ + mid$(format$, i, 1)
+                    i = i + 1
+                end select
+            end select
         end select
     end select
   wend
