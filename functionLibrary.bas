@@ -77,13 +77,13 @@ function formatDate$(d$, format$)
   while i <= len(format$)
     select case mid$(format$, i, 5)
       case "month"
-        formatDate$ = formatDate$ + lower$(MONTH$(mm))
+        formatDate$ = formatDate$ + lower$(month$(mm))
         i = i + 5
       case "Month"
-        formatDate$ = formatDate$ + MONTH$(mm)
+        formatDate$ = formatDate$ + month$(mm)
         i = i + 5
       case "MONTH"
-        formatDate$ = formatDate$ + upper$(MONTH$(mm))
+        formatDate$ = formatDate$ + upper$(month$(mm))
         i = i + 5
       case else
         select case mid$(format$, i, 4)
@@ -96,13 +96,13 @@ function formatDate$(d$, format$)
           case else
             select case mid$(format$, i, 3)
               case "mon"
-                formatDate$ = formatDate$ + lower$(left$(MONTH$(mm), 3))
+                formatDate$ = formatDate$ + lower$(left$(month$(mm), 3))
                 i = i + 3
               case "Mon"
-                formatDate$ = formatDate$ + left$(MONTH$(mm), 3)
+                formatDate$ = formatDate$ + left$(month$(mm), 3)
                 i = i + 3
               case "MON"
-                formatDate$ = formatDate$ + upper$(left$(MONTH$(mm), 3))
+                formatDate$ = formatDate$ + upper$(left$(month$(mm), 3))
                 i = i + 3
               case else
                 select case mid$(format$, i, 2)
@@ -139,6 +139,12 @@ function formatDate$(d$, format$)
     end select
   wend
 [unknowFormat]
+end function
+
+function month$(m)
+  ' Return the name of the mth month or an empty string for an invalid month.
+  m = int(m)
+  if m > 0 and m < 13 then month$ = MONTH$(m)
 end function
 
 ' -------------------
