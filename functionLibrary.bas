@@ -36,6 +36,78 @@ function adler32(s$)
   adler32 = (s2 * 65536) + s1
 end function
 
+' --------------
+' Date Functions
+' --------------
+
+function formatDate$(d$, format$)
+  ' convert date from YYYY-MM-DD or MM/DD/YYYY format to the supplied format
+  if instr(d$, "-") <> 0 then
+    ' YYYY-MM-DD
+    dd = val(word$(d$, 3, "-"))
+    mm = val(word$(d$, 2, "-"))
+    yyyy = val(word$(d$, 1, "-"))
+    cc = int(yyyy / 100)
+    yy = yyyy - (cc * 100)
+  else
+    if instr(d$, "/") <> 0 then 
+      ' MM/DD/YYYY
+      dd = val(word$(d$, 2, "/"))
+      mm = val(word$(d$, 1, "/"))
+      yyyy = val(word$(d$, 3, "/"))
+      cc = int(yyyy / 100)
+      yy = yyyy - (cc * 100)
+    else
+      ' Unknown format - return unchanged
+      formatDate$ = d$
+      goto [unknownFormat]
+    end if
+  end if
+
+  i = 1
+  while i <= len(format$)
+    select case mid$(format$, i, 4)
+      case "yyyy"
+        formatDate$ = formatDate$ + str$(yyyy)
+        i = i + 4
+      case "YYYY"
+        formatDate$ = formatDate$ + right$("0000" + str$(yyyy), 4)
+        i = i + 4
+      case else
+        select case mid$(format$, i, 2)
+          case "cc"
+            formatDate$ = formatDate$ + str$(cc)
+            i = i + 2
+          case "CC"
+            formatDate$ = formatDate$ + right$("00" + str$(cc), 2)
+            i = i + 2
+          case "dd"
+            formatDate$ = formatDate$ + str$(dd)
+            i = i + 2
+          case "DD"
+            formatDate$ = formatDate$ + right$("00" + str$(dd), 2)
+            i = i + 2
+          case "mm"
+            formatDate$ = formatDate$ + str$(mm)
+            i = i + 2
+          case "MM"
+            formatDate$ = formatDate$ + right$("00" + str$(mm), 2)
+            i = i + 2
+          case "yy"
+            formatDate$ = formatDate$ + str$(yy)
+            i = i + 2
+          case "YY"
+            formatDate$ = formatDate$ + right$("00" + str$(yy), 2)
+            i = i + 2
+          case else
+            formatDate$ = formatDate$ + mid$(format$, i, 1)
+            i = i + 1
+        end select
+    end select
+  wend
+[unknowFormat]
+end function
+
 ' -------------------
 ' File Path Functions
 ' -------------------
@@ -131,6 +203,13 @@ end function
 ' String Functions
 ' ----------------
 
+function hex$(str$)
+  ' Return hexidecimal representation of str$
+  for i = 1 to len(str$)
+    hex$ = hex$ + dechex$(asc(mid$(str$, i, 1)))
+  next i
+end function
+
 function getPrefix$(str$, match$)
   ' Return the portion of str$ before match$ or "" if match$ not found
   i = instr(str$, match$)
@@ -156,6 +235,32 @@ function extract$(str$, s$, e$)
   extract$ = getPrefix$(getSuffix$(str$, s$), e$)
 end function
 
+function lpad$(str$, padlen, padstr$)
+  ' Return str$ left padded to length padlen using the string padstr$
+  if len(str$) < padlen then
+    lpad$ = padstr$
+    while len(str$) + len(lpad$) < padlen
+      lpad$ = lpad$ + padstr$
+    wend
+    lpad$ = left$(lpad$, padlen - len(str$)) + str$
+  else
+    lpad$ = str$
+  end if
+end function
+
+function rpad$(str$, padlen, padstr$)
+  ' Return str$ right padded to length padlen using the string padstr$
+  if len(str$) < padlen then
+    rpad$ = str$
+    while len(rpad$) < padlen
+      rpad$ = rpad$ + padstr$
+    wend
+    rpad$ = left$(rpad$, padlen)
+  else
+    rpad$ = str$
+  end if
+end function
+
 function replace$(str$, match$, rep$)
   ' Return str$ with first occurance of match$ repaced by rep$
   i = instr(str$, match$)
@@ -175,6 +280,18 @@ function replaceAll$(str$, match$, rep$)
     i = instr(str$, match$)
   wend
   replaceAll$ = replaceAll$ + str$
+end function
+
+function randomCharacter$()
+  ' Return a random printable character
+  randomCharacter$ = chr$(rnd(1) * 94 + 33)
+end function
+
+function randomString$(n)
+  ' Return a random string of n printable characters
+  for i = 1 to n
+    randomString$ = randomString$ + randomCharacter$()
+  next i
 end function
 
 ' ----------------
