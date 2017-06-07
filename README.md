@@ -12,13 +12,13 @@ print #lib prefix$("Hello world!", " world") ' print "Hello"
 
 ## Functions
 
-####isnull()
+#### isnull()
 Always returns 0.
 
-####debug$()
+#### debug$()
 Returns "Function Library"
 
-####version()
+#### version()
 Returns the library version (currently set to 8).
 
 ### Checksum Functions
