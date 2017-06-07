@@ -19,7 +19,7 @@ Always returns 0.
 Returns "Function Library"
 
 ####version()
-Returns the library version (currently set to 7).
+Returns the library version (currently set to 8).
 
 ### Checksum Functions
 
@@ -52,6 +52,9 @@ Any other characters are returned unchanged.
 
 ### File Path Function
 
+#### setPathSeparator(str$)
+Sets the path separator to **str$**.
+
 #### basename$(path$)
 Returns the filename portion of the pathname **path$**.
 
@@ -74,11 +77,23 @@ Returns **str$** with characters <, >, &, ", ' encoded to HMTM entities.
 #### hex$(str$)
 Returns the hexidecial representation of *str$*.
 
+#### upto$(str$, match$)
+Returns the portion of **str$** before **match$** or "" if **match$** is not found. Same as **getPrefix$()**.
+
 #### getPrefix$(str$, match$)
-Returns the portion of **str$** before **match$** or "" if **match$** is not found.
+Returns the portion of **str$** before **match$** or "" if **match$** is not found. Same as **upto$()**.
+
+#### after$(str$, match$)
+Returns the portion of **str$** after **match$** or "" if **match$** is not found. Same as **getSuffix$()**.
+
+#### afterLast$(str$, match$)
+Returns the portion of **str$** after the last occurence of **match$** or "" if **match$** is not found.
 
 #### getSuffix$(str$, match$)
 Returns the portion of **str$** after **match$** or "" if **match$** is not found.
+
+#### endswith(str$, match$)
+Returns 1 if the rightmost portion of **str$** is **match$**, otherwise it returns 0.
 
 #### extract$(str$, s$, e$)
 Returns the portion of **str$** between **s$** and **e$** or "" if either **s$** or **e$** is not found.
@@ -89,6 +104,9 @@ Returns *str$* left padded with *padstr$* to the length *padlen*.
 #### rpad$(str$, padlen, padstr$)
 Returns *str$* right padded with *padstr$* to the length *padlen*.
 
+#### remchar(str$, removeThese$)
+Return **str$** with all **removeThese$** characters removed
+
 #### replace$(str$, match$, rep$)
 Returns **str$** with first occurance of **match$** repaced by **rep$**. If **match$** is not found,
 **str$** is returned unchanged.
@@ -96,6 +114,9 @@ Returns **str$** with first occurance of **match$** repaced by **rep$**. If **ma
 #### replaceAll$(str$, match$, rep$)
 Returns **str$** with all occurances of **match$** replaced by **rep$**. If **match$** is not found,
 **str$** is returned unchanged.
+
+#### startsWith$(str$, match$)
+Returns 1 if the leftmost portion of **str$** is **match$**, otherwise it returns 0.
 
 #### randomCharacter$()
 Returns a random printable ASCII character.
