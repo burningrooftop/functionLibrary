@@ -12,7 +12,7 @@ next i
 data "January", "February", "March", "April", "May", "June"
 data "July", "August", "September", "October", "November", "December" 
 
-if Platform$ = "windows" then
+if Platform$ = "win32" then
   PATHSEPARATOR$ = "\"
 else
   PATHSEPARATOR$ = "/"
@@ -20,7 +20,7 @@ end if
 
 function version()
   ' Return the library version
-  version = 7
+  version = 8
 end function
 
 function isnull()
@@ -242,6 +242,26 @@ end function
 ' String Functions
 ' ----------------
 
+function after$(str$, match$)
+  ' Return the portion of str$ after match$ or "" if match$ not found
+  i = instr(str$, match$)
+  if i < 1 then
+    after$ = ""
+  else
+    after$ = mid$(str$, i + len(match$))
+  end if
+end function
+
+function afterLast$(str$, match$)
+  ' Return the portion of str$ after the last occurrence of match$ or "" if match$ not found
+  i = instr(str$, match$)
+  while i > 0
+    i = i + len(match$)
+    afterLast$ = mid$(str$, i)
+    i = instr(str$, match$, i)
+  wend
+end function
+
 function hex$(str$)
   ' Return hexidecimal representation of str$
   for i = 1 to len(str$)
@@ -250,28 +270,21 @@ function hex$(str$)
 end function
 
 function getPrefix$(str$, match$)
-  ' Return the portion of str$ before match$ or "" if match$ not found
-  i = instr(str$, match$)
-  if i < 2 then
-    getPrefix$ = ""
-  else
-    getPrefix$ = mid$(str$, 1, i - 1)
-  end if
+  getPrefix$ = upto$(str$, match$)
 end function
 
 function getSuffix$(str$, match$)
-  ' Return the portion of str$ after match$ or "" if match$ not found
-  i = instr(str$, match$)
-  if i < 1 then
-    getSuffix$ = ""
-  else
-    getSuffix$ = mid$(str$, i + len(match$))
-  end if
+  getSuffix$ = after$(str$, match$)
+end function
+
+function endsWith(a$, b$)
+  ' Return 1 if a$ ends with b$
+  if right$(a$, len(b$)) = b$ then endsWith = 1
 end function
 
 function extract$(str$, s$, e$)
   ' Return the portion of str$ between s$ and e$
-  extract$ = getPrefix$(getSuffix$(str$, s$), e$)
+  extract$ = upto$(after$(str$, s$), e$)
 end function
 
 function lpad$(str$, padlen, padstr$)
@@ -287,17 +300,24 @@ function lpad$(str$, padlen, padstr$)
   end if
 end function
 
-function rpad$(str$, padlen, padstr$)
-  ' Return str$ right padded to length padlen using the string padstr$
-  if len(str$) < padlen then
-    rpad$ = str$
-    while len(rpad$) < padlen
-      rpad$ = rpad$ + padstr$
-    wend
-    rpad$ = left$(rpad$, padlen)
-  else
-    rpad$ = str$
-  end if
+function randomCharacter$()
+  ' Return a random printable character
+  randomCharacter$ = chr$(rnd(1) * 94 + 33)
+end function
+
+function randomString$(n)
+  ' Return a random string of n printable characters
+  for i = 1 to n
+    randomString$ = randomString$ + randomCharacter$()
+  next i
+end function
+
+function remchar$(str$, removeThese$)
+  ' Return str$ with all removeThese$ characters removed
+  for i = 1 to len(str$)
+    c$ = mid$(str$, i, 1)
+    if instr(removeThese$, c$) = 0 then remchar$ = remchar$ + c$
+  next i
 end function
 
 function replace$(str$, match$, rep$)
@@ -321,16 +341,32 @@ function replaceAll$(str$, match$, rep$)
   replaceAll$ = replaceAll$ + str$
 end function
 
-function randomCharacter$()
-  ' Return a random printable character
-  randomCharacter$ = chr$(rnd(1) * 94 + 33)
+function rpad$(str$, padlen, padstr$)
+  ' Return str$ right padded to length padlen using the string padstr$
+  if len(str$) < padlen then
+    rpad$ = str$
+    while len(rpad$) < padlen
+      rpad$ = rpad$ + padstr$
+    wend
+    rpad$ = left$(rpad$, padlen)
+  else
+    rpad$ = str$
+  end if
 end function
 
-function randomString$(n)
-  ' Return a random string of n printable characters
-  for i = 1 to n
-    randomString$ = randomString$ + randomCharacter$()
-  next i
+function startsWith(a$, b$)
+  ' Return 1 if a$ starts with b$
+  if left$(a$, len(b$)) = b$ then startsWith = 1
+end function
+
+function upto$(str$, match$)
+  ' Return the portion of str$ before match$ or "" if match$ not found
+  i = instr(str$, match$)
+  if i < 2 then
+    upto$ = ""
+  else
+    upto$ = mid$(str$, 1, i - 1)
+  end if
 end function
 
 ' ----------------
